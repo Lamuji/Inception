@@ -1,0 +1,92 @@
+version: '3.7'
+
+volumes:
+  DB:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/asebrech/data/DB'
+  wordpress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/asebrech/data/wordpress'
+
+networks:
+  docker_network:
+    driver: bridge
+    name: docker_network
+
+services:
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    build:
+      context: ./requirements/mariadb
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
+        DB_ROOT_PW: ${DB_ROOT_PW}
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_USER_PW: ${DB_USER_PW}
+        WP_USER: ${WP_USER}
+        WP_USER_PW: ${WP_USER_PW}
+    volumes:
+      - DB:/var/lib/mysql
+    restart: on-failure
+    init: true
+    networks:
+      - docker_network
+    expose:
+      - "3306/tcp"
+      - "3306/udp"
+
+  wordpress:
+    depends_on:
+      - mariadb
+    image: wordpress
+    container_name: wordpress
+    build:
+      context: ./requirements/wordpress
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
+        DB_ROOT_PW: ${DB_ROOT_PW}
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_USER_PW: ${DB_USER_PW}
+        WP_USER: ${WP_USER}
+        WP_USER_PW: ${WP_USER_PW}
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      DB_ROOT_PW: ${DB_ROOT_PW}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_USER_PW: ${DB_USER_PW}
+      WP_USER: ${WP_USER}
+      WP_USER_PW: ${WP_USER_PW}
+    volumes:
+      - wordpress:/var/www/localhost/wordpress
+    restart: on-failure
+    networks:
+      - docker_network
+    expose:
+      - "9000/tcp"
+      - "9000/udp"
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    build: ./requirements/wordpress
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+    volumes:
+      - wordpress:/var/www/localhost/wordpress
+    restart: on-failure
+    networks:
+      - docker_network
+    expose:
+      - "443:443/tcp"
+      - "443:443/udp"
