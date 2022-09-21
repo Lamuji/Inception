@@ -1,13 +1,26 @@
 build_nginx :
-	sudo docker-compose --file ./srcs/docker-compose.yml up --build nginx
+	sudo docker-compose --file ./srcs/docker-compose.yml up -d --build nginx
 
 build_wordpress :
-	sudo docker-compose --file ./srcs/docker-compose.yml up --build wordpress
+	sudo docker-compose --file ./srcs/docker-compose.yml up -d --build wordpress
 	
 build_mariadb :
-	sudo docker-compose --file ./srcs/docker-compose.yml up --build mariadb
+	sudo docker-compose --file ./srcs/docker-compose.yml up -d --build mariadb
 
-build : build_nginx build_wordpress build_mariadb
+build :
+	sudo docker-compose --file ./srcs/docker-compose.yml up -d --build
+
+up_nginx :
+	sudo docker-compose --file ./srcs/docker-compose.yml up nginx
+
+up_wordpress :
+	sudo docker-compose --file ./srcs/docker-compose.yml up wordpress
+        
+up_mariadb :
+	sudo docker-compose --file ./srcs/docker-compose.yml up mariadb
+
+up :
+	sudo docker-compose --file ./srcs/docker-compose.yml up
 
 down :
 	sudo docker-compose --file ./srcs/docker-compose.yml down

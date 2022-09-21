@@ -29,6 +29,6 @@ RUN	chmod 444 /etc/mysql/mariadb.conf.d/my.cnf \
 	&& mysql --user=root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PW}';" \
 	&& mysql --user=root -p${DB_ROOT_PW} -e "FLUSH PRIVILEGES;"
 
-EXPOSE	3306
+EXPOSE	3306/tcp 3306/udp
 
 ENTRYPOINT ["mysqld", "--user=root", "--datadir=/var/lib/mysql"]

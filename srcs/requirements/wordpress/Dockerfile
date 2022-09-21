@@ -31,7 +31,7 @@ RUN	apt install wget \
 	php7.3-opcache \
 	php7.3-readline \
 	php7.3-mbstring -y 
-RUN	mkdir -p /var/www/localhost/wordpress
+RUN	mkdir -p /var/www/localhost/wordpress /run/php
 RUN	cd /usr/local/bin && ls
 RUN	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN	chmod +x wp-cli.phar 
@@ -45,9 +45,8 @@ COPY	./conf/wp.sh	.
 
 
 
-EXPOSE	9000
+EXPOSE	9000/tcp 9000/udp
 
 ENTRYPOINT	["bash", "wp.sh"]
 
 CMD	["php-fpm7.3", "-F"]
-#ENTRYPOINT	["tail", "-f", "/dev/null"]

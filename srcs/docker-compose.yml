@@ -77,9 +77,11 @@ services:
       - "9000/udp"
 
   nginx:
+    depends_on:
+      - wordpress
     image: nginx
     container_name: nginx
-    build: ./requirements/wordpress
+    build: ./requirements/nginx
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
     volumes:
@@ -87,6 +89,6 @@ services:
     restart: on-failure
     networks:
       - docker_network
-    expose:
+    ports:
       - "443:443/tcp"
       - "443:443/udp"
