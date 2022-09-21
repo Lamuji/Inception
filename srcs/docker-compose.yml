@@ -15,9 +15,9 @@ volumes:
       device: '/home/asebrech/data/wordpress'
 
 networks:
-  docker_network:
+  inception_network:
     driver: bridge
-    name: docker_network
+    name: inception_network
 
 services:
 
@@ -39,7 +39,7 @@ services:
     restart: on-failure
     init: true
     networks:
-      - docker_network
+      - inception_network
     expose:
       - "3306/tcp"
       - "3306/udp"
@@ -71,7 +71,7 @@ services:
       - wordpress:/var/www/localhost/wordpress
     restart: on-failure
     networks:
-      - docker_network
+      - inception_network
     expose:
       - "9000/tcp"
       - "9000/udp"
@@ -88,7 +88,7 @@ services:
       - wordpress:/var/www/localhost/wordpress
     restart: on-failure
     networks:
-      - docker_network
+      - inception_network
     ports:
       - "443:443/tcp"
       - "443:443/udp"
