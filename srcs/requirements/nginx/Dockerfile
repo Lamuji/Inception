@@ -6,8 +6,8 @@ RUN     apt install openssl -y
 RUN	apt install nginx -y
 RUN	mkdir -p /var/www/localhost/html /etc/nginx/tls
 RUN 	openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /etc/nginx/tls/asebrech.key -out /etc/nginx/tls/asebrech.crt \
-	-subj "/C=FR/ST=Nice/L=Nice/O=42nice/OU=asebrech/CN=asebrech.42.fr"
+	-keyout /etc/nginx/tls/rfkaier.key -out /etc/nginx/tls/rfkaier.crt \
+	-subj "/C=FR/ST=Nice/L=Nice/O=42nice/OU=rfkaier/CN=rfkaier.42.fr"
 
 COPY	./conf/default /etc/nginx/sites-available/default
 

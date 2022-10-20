@@ -1,20 +1,20 @@
 all : build
 
 build :
-	sudo docker-compose --file ./srcs/docker-compose.yml up -d --build
+	docker compose --file ./srcs/docker-compose.yml up -d --build
 
 up :
-	sudo docker-compose --file ./srcs/docker-compose.yml up -d
+	docker compose --file ./srcs/docker-compose.yml up -d
 
 down :
-	sudo docker-compose --file ./srcs/docker-compose.yml down
+	docker compose --file ./srcs/docker-compose.yml down
 
 clean_docker :
 	echo y | sudo docker system prune -a
 
 clean_volume :
-	sudo rm -rf /home/asebrech/data/DB /home/asebrech/data/wordpress
-	sudo mkdir -p /home/asebrech/data/DB /home/asebrech/data/wordpress
+	rm -rf /home/rfkaier/data/DB /home/rfkaier/data/wordpress
+	mkdir -p /home/rfkaier/data/DB /home/rfkaier/data/wordpress
 
 fclean : clean_docker clean_volume
 
